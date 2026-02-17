@@ -1,0 +1,11 @@
+1. basic settings to all devices and ssh on the routers and l3 switch for remote access
+2. vlans assignment plus all access and trunk ports on l2 and l3 switches
+3. switchport security to finance department.
+4.subnetting and ip addressing
+5.ospf on the routers and l3 switches
+6.sttic ip address to serverroom devices.
+7. dhcp server device configurations.
+8. inter-vlan routing on the l3 switches plus dhcp relay config(ip dhcp helper)
+9. wireless network config
+10. PAT and necessary acl
+11. verifying and testing configurations.
