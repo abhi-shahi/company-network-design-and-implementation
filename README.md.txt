@@ -208,6 +208,21 @@ shutdown
 int range fa0/1-2
 sw mo tr
 
+!!static ip to server room devices
+
+dhcp: 172.16.3.130 255.255.255.240
+default gateway 172.16.3.129 dns:172.16.3.131
+
+admin pc: 172.16.3.132 255.255.255.240
+default gateway 172.16.3.129 dns: 172.16.3.131
+
+dns server:172.16.3.131 255.255.255.240
+default gateway 172.16.3.129
+
+
+
+
+
 
 
 
@@ -285,6 +300,31 @@ network 172.16.3.148 0.0.0.3 area 0
 
 do wr
 
+
+
+int vlan 10
+ip add 172.16.1.1 255.255.255.128
+ip helper-address 172.16.3.130
+
+int vlan 20
+ip add 172.16.1.129 255.255.255.128
+ip helper-address 172.16.3.130
+
+int vlan 30
+ip add 172.16.2.1 255.255.255.128
+ip helper-address 172.16.3.130
+
+int vlan 40
+ip add 172.16.1.129 255.255.255.128
+ip helper-address 172.16.3.130
+
+int vlan 50
+ip add 172.16.3.1 255.255.255.128
+ip helper-address 172.16.3.130
+
+int vlan 60
+ip add 172.16.3.129 255.255.255.240
+ip helper-address 172.16.3.130
 
 
 
@@ -452,6 +492,18 @@ ip add 195.136.17.13 255.255.255.252
 no shut
 
 exit
+
+router ospf 10
+router id 4.4.4.4
+
+
+network 172.16.3.148 0.0.0.3 area 0
+network 172.16.3.156 0.0.0.3 area 0
+
+network 195.136.17.8 0.0.0.3 area 0
+network 195.136.17.12 0.0.0.3 area 0
+do wr
+
 do wr
 
 
@@ -467,6 +519,13 @@ no shut
 int se0/3/1
 ip add 195.136.17.10 255.255.255.252
 no shut
+
+router ospf 10
+router id 7.7.7.7
+int se0/3/0
+ip ospf 10 area 0
+int se0/3/1
+ip ospf 10 area 0
 do wr
 
 
@@ -482,6 +541,15 @@ ip add 195.136.17.14 255.255.255.252
 no shut
 
 do wr
+
+router ospf 10
+router id 8.8.8.8
+int se0/3/0
+ip ospf 10 area 0
+int se0/3/1
+ip ospf 10 area 0
+do wr
+
 
 
 
