@@ -253,7 +253,7 @@ name ICT
 vlan 60
 name SRV-ROOM
 
-do wr
+
 
 int range g1/0/1-2
 no switchport
@@ -267,6 +267,25 @@ no shut
 int g1/0/2
 ip add 172.16.3.149 255.255.255.252
 no shut
+
+
+!!ospf routing
+ip routing
+router ospf 10
+router-id 2.2.2.2
+network 172.16.1.0 0.0.0.127 area 0
+network 172.16.1.128 0.0.0.127 area 0
+network 172.16.2.0 0.0.0.127 area 0
+network 172.16.2.128 0.0.0.127 area 0
+network 172.16.3.0 0.0.0.15 area 0
+network 172.16.3.128 0.0.0.15 area 0
+
+network 172.16.3.144 0.0.0.3 area 0
+network 172.16.3.148 0.0.0.3 area 0
+
+do wr
+
+
 
 
 
@@ -308,6 +327,24 @@ no shut
 int g1/0/2
 ip add 172.16.3.157 255.255.255.252
 no shut
+
+!!ospf config
+ip routing
+router ospf 10
+router-id 1.1.1.1
+network 172.16.1.0 0.0.0.127 area 0
+network 172.16.1.128 0.0.0.127 area 0
+network 172.16.2.0 0.0.0.127 area 0
+network 172.16.2.128 0.0.0.127 area 0
+network 172.16.3.0 0.0.0.15 area 0
+network 172.16.3.128 0.0.0.15 area 0
+
+network 172.16.3.152 0.0.0.3 area 0
+network 172.16.3.156 0.0.0.3 area 0
+
+do wr
+
+
 
 
 
@@ -354,8 +391,23 @@ int se0/3/1
 ip add 195.136.17.5 255.255.255.252
 no shut
 
+!!ospf on corerouter-1
+ip routing
+router ospf 10
+router id 3.3.3.3
+
+
+network 172.16.3.144 0.0.0.3 area 0
+network 172.16.3.152 0.0.0.3 area 0
+
+network 195.136.17.0 0.0.0.3 area 0
+network 195.136.17.4 0.0.0.3 area 0
+do wr
+
+
 
 exit
+do wr
 
 
 
@@ -400,6 +452,8 @@ ip add 195.136.17.13 255.255.255.252
 no shut
 
 exit
+do wr
+
 
 
 
@@ -413,6 +467,8 @@ no shut
 int se0/3/1
 ip add 195.136.17.10 255.255.255.252
 no shut
+do wr
+
 
 
 
@@ -424,6 +480,8 @@ no shut
 int se0/3/1
 ip add 195.136.17.14 255.255.255.252
 no shut
+
+do wr
 
 
 
