@@ -103,6 +103,13 @@ shutdown
 int range fa0/1-2
 sw mo tr
 
+int fa0/5
+no switchport port-security
+no switchport port-security maximum 1
+no switchport port-security mac-address sticky
+no switchport port-security violation shutdown
+
+
 
 
 
@@ -326,6 +333,18 @@ int vlan 60
 ip add 172.16.3.129 255.255.255.240
 ip helper-address 172.16.3.130
 
+ip route 0.0.0.0 0.0.0.0 gig1/0/1
+ip route 0.0.0.0 0.0.0.0 gig1/0/2 70
+do wr
+
+!!ssh trouble shoot as login local was not working.There was issue is with local username authentication.
+
+conf t
+line vty 0 15
+no login local
+password test123
+login
+end
 
 
 
@@ -384,7 +403,19 @@ network 172.16.3.156 0.0.0.3 area 0
 
 do wr
 
+ip route 0.0.0.0 0.0.0.0 gig1/0/2
+ip route 0.0.0.0 0.0.0.0 gig1/0/1 70
 
+
+
+!!ssh trouble shoot as login local was not working.There was issue is with local username authentication.
+
+conf t
+line vty 0 15
+no login local
+password test123
+login
+end
 
 
 
@@ -406,7 +437,7 @@ no ip domain lookup
 banner motd @@ no unauthorized access@@
 service password-encryption
 
-hostname admin password cisco
+username admin password cisco
 ip domain-name cisco.net
 crypto key generate rsa
 1024
@@ -444,10 +475,33 @@ network 195.136.17.0 0.0.0.3 area 0
 network 195.136.17.4 0.0.0.3 area 0
 do wr
 
-
-
 exit
+access-list 1 permit 172.16.1.0 0.0.0.127
+access-list 1 permit 172.16.1.128 0.0.0.127
+access-list 1 permit 172.16.2.0 0.0.0.127
+access-list 1 permit 172.16.2.128 0.0.0.127
+access-list 1 permit 172.16.3.0 0.0.0.127
+access-list 1 permit 172.16.3.128 0.0.0.15
+
+
+
+IP NAT inside source list 1 int s0/3/0 overload
+ip nat inside source list 1 int s0/3/1 overload
+
+int g0/0
+ip nat inside
+int g0/1
+ip nat inside
+
+int s0/3/0
+ip nat outside
+int s0/3/1
+ip nat outside
+
 do wr
+
+ip route 0.0.0.0 0.0.0.0 se 0/3/0
+ip route 0.0.0.0 0.0.0.0 se 0/3/1 70
 
 
 
@@ -456,8 +510,7 @@ en
 conf t
 hostname CORE-R2
 line console 0
-passwo
-rd cisco
+password cisco
 login
 exit
 
@@ -466,7 +519,7 @@ no ip domain lookup
 banner motd @@ no unauthorized access@@
 service password-encryption
 
-hostname admin password cisco
+username admin password cisco
 ip domain-name cisco.net
 crypto key generate rsa
 1024
@@ -504,8 +557,42 @@ network 195.136.17.8 0.0.0.3 area 0
 network 195.136.17.12 0.0.0.3 area 0
 do wr
 
+access-list 1 permit 172.16.1.0 0.0.0.127
+access-list 1 permit 172.16.1.128 0.0.0.127
+access-list 1 permit 172.16.2.0 0.0.0.127
+access-list 1 permit 172.16.2.128 0.0.0.127
+access-list 1 permit 172.16.3.0 0.0.0.127
+access-list 1 permit 172.16.3.128 0.0.0.15
+
+
+
+IP NAT inside source list 1 int s0/3/0 overload
+ip nat inside source list 1 int s0/3/1 overload
+
+int g0/0
+ip nat inside
+int g0/1
+ip nat inside
+
+int s0/3/0
+ip nat outside
+int s0/3/1
+ip nat outside
+
 do wr
 
+
+ip route 0.0.0.0 0.0.0.0 se 0/3/1
+ip route 0.0.0.0 0.0.0.0 se 0/3/0 70
+do wr
+
+!!ssh trouble shoot as login local was not working.There was issue is with local username authentication.
+conf t
+line vty 0 15
+no login local
+password test123
+login
+end
 
 
 
